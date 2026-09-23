@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Mes objets{% endblock %}
+{% block content %}
+<h1>Mes objets</h1>
+<p><a href="{% url 'items:create' %}" role="button">Ajouter un objet à prêter</a></p>
+{% if items %}
+  <ul class="item-list">
+    {% for item in items %}
+      <li>
+        <article class="item-card">
+          <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+          <p class="meta">{{ item.category }} · ajouté le {{ item.created_at|date:"j F Y" }}</p>
+          <div class="actions">
+            <a href="{% url 'items:edit' item.pk %}">Modifier</a>
+            <a href="{% url 'items:delete' item.pk %}">Supprimer</a>
+          </div>
+        </article>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Vous ne proposez encore aucun objet.</p>
+{% endif %}
+{% endblock %}

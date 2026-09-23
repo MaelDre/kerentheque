@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Connexion</h1></header>
+  <form method="post" action="{% url 'accounts:magic_link' %}">
+    {% csrf_token %}
+    <input type="hidden" name="sesame" value="{{ token }}">
+    <button type="submit">Me connecter à Kerentheque</button>
+  </form>
+</article>
+{% endblock %}

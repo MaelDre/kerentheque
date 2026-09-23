@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Consultez vos emails{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Consultez vos emails</h1></header>
+  <p>Si l'adresse <strong>{{ email }}</strong> peut être utilisée, un lien de connexion vient d'y être envoyé.
+     Il est valable 15 minutes et ne fonctionne qu'une fois.</p>
+  <p class="meta">Vous ne le trouvez pas ? Vérifiez votre dossier de courriers indésirables.
+     Vous pourrez demander un nouveau lien dans une minute.</p>
+  <a href="{% url 'accounts:login' %}">Utiliser une autre adresse</a>
+</article>
+{% endblock %}

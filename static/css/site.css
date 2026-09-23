@@ -1,0 +1,53 @@
+/* Compléments à Pico CSS, propres à Kerentheque. */
+
+:root {
+  --kt-success: #1f7a3d;
+  --kt-muted: var(--pico-muted-color);
+}
+
+body > header nav { flex-wrap: wrap; }
+.brand { text-decoration: none; }
+
+/* Messages flash */
+.message { padding: 0.75rem 1rem; margin-bottom: 1rem; }
+.message-success { border-left: 4px solid var(--kt-success); }
+.message-error { border-left: 4px solid var(--pico-del-color); }
+.message-warning { border-left: 4px solid #c98a00; }
+
+/* Bouton d'apparence lien (déconnexion dans le menu) */
+.inline-form { margin: 0; }
+.link-button {
+  background: none; border: none; padding: 0; margin: 0; width: auto;
+  color: var(--pico-primary); cursor: pointer; font-size: inherit;
+}
+
+/* Catalogue */
+.filters { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+  .filters { grid-template-columns: 2fr 1fr 1fr auto; align-items: end; }
+}
+.item-list { list-style: none; padding: 0; }
+.item-list li { list-style: none; }
+.item-card { margin-bottom: 1rem; }
+.item-card header, .item-card footer { margin-bottom: 0; }
+.item-card h3 { margin-bottom: 0.25rem; }
+.meta { color: var(--kt-muted); font-size: 0.9em; }
+.description { white-space: pre-line; overflow-wrap: anywhere; }
+
+/* Statuts des demandes */
+.status { font-weight: 600; white-space: nowrap; }
+.status-pending { color: #c98a00; }
+.status-accepted { color: var(--kt-success); }
+.status-refused, .status-cancelled { color: var(--kt-muted); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.actions form { margin: 0; }
+.actions button, .actions [role="button"] { width: auto; margin: 0; }
+
+.pagination { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+
+/* Évite tout débordement horizontal sur petit écran */
+main, article { overflow-wrap: anywhere; }
+
+/* Erreurs de formulaire */
+.field-error { color: var(--pico-del-color); display: block; margin-top: -0.5rem; margin-bottom: 1rem; }

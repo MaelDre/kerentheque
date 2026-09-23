@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ item.name }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'items:catalog' %}">← Catalogue</a></p>
+<article>
+  <header>
+    <h1>{{ item.name }}</h1>
+    <p class="meta">{{ item.category }} · Prêté par <strong>{{ item.owner.pseudo }}</strong> · {{ item.owner.neighborhood }}</p>
+  </header>
+  {% if item.description %}
+    <p class="description">{{ item.description }}</p>
+  {% else %}
+    <p class="meta">Pas de description.</p>
+  {% endif %}
+</article>
+
+{% if is_owner %}
+  <div class="actions">
+    <a href="{% url 'items:edit' item.pk %}" role="button">Modifier</a>
+    <a href="{% url 'items:delete' item.pk %}" role="button" class="secondary outline">Supprimer</a>
+  </div>
+
+{% elif not user.is_authenticated %}
+  <article>
+    <p>Envie d'emprunter cet objet ?</p>
+    <a href="{% url 'accounts:login' %}" role="button">Se connecter pour contacter {{ item.owner.pseudo }}</a>
+  </article>
+
+{% elif existing_request %}
+  <article>
+    <p>Vous avez déjà envoyé une demande pour cet objet :
+      {% include "contacts/status.html" with req=existing_request %}</p>
+    <a href="{% url 'contacts:sent' %}">Voir mes demandes</a>
+  </article>
+
+{% else %}
+  <article>
+    <header><h2>Contacter {{ item.owner.pseudo }}</h2></header>
+    <form method="post" action="{% url 'contacts:send' item.pk %}">
+      {% csrf_token %}
+      <p>{{ item.owner.pseudo }} recevra votre demande par email et pourra l'accepter ou la refuser.
+         S'il accepte, vous recevrez ses coordonnées pour organiser le prêt.</p>
+      <p>Coordonnées qui seront transmises à {{ item.owner.pseudo }} dès l'envoi :</p>
+      <ul>
+        {% if shared_contact.email %}<li>Email : {{ shared_contact.email }}</li>{% endif %}
+        {% if shared_contact.phone %}<li>Téléphone : {{ shared_contact.phone }}</li>{% endif %}
+      </ul>
+      <p class="meta"><a href="{% url 'accounts:profile' %}">Modifier mes réglages de partage</a></p>
+      {% include "includes/form_fields.html" with form=request_form %}
+      <button type="submit">Envoyer ma demande</button>
+    </form>
+  </article>
+{% endif %}
+
+{% if user.is_authenticated and not is_owner %}
+  <p><small><a href="{% url 'moderation:report' item.pk %}">Signaler cet objet ou son propriétaire</a></small></p>
+{% endif %}
+{% endblock %}

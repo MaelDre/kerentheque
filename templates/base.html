@@ -1,0 +1,58 @@
+{% load static %}<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{% block title %}Kerentheque{% endblock %} · Kerentheque</title>
+  <link rel="stylesheet" href="{% static 'css/pico.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li><a href="{% url 'items:catalog' %}" class="brand"><strong>Kerentheque</strong></a></li>
+      </ul>
+      <ul>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'items:create' %}">Prêter un objet</a></li>
+          <li>
+            <details class="dropdown">
+              <summary>Mon compte</summary>
+              <ul dir="rtl">
+                <li><a href="{% url 'items:mine' %}">Mes objets</a></li>
+                <li><a href="{% url 'contacts:sent' %}">Mes demandes</a></li>
+                <li><a href="{% url 'contacts:received' %}">Demandes reçues</a></li>
+                <li><a href="{% url 'accounts:profile' %}">Mon profil</a></li>
+                <li>
+                  <form method="post" action="{% url 'accounts:logout' %}" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Se déconnecter</button>
+                  </form>
+                </li>
+              </ul>
+            </details>
+          </li>
+        {% else %}
+          <li><a href="{% url 'accounts:login' %}" role="button">Se connecter</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% for message in messages %}
+      <article class="message message-{{ message.tags }}" role="status">{{ message }}</article>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="{% url 'accounts:legal' %}">Mentions légales</a> ·
+      <a href="{% url 'accounts:privacy' %}">Confidentialité</a>
+    </small>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{# Rendu des champs d'un formulaire Django adapté à Pico CSS. #}
+{% if form.non_field_errors %}
+  <article class="message message-error" role="alert">
+    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+  </article>
+{% endif %}
+{% for field in form.hidden_fields %}{{ field }}{% endfor %}
+{% for field in form.visible_fields %}
+  {% if field.widget_type == "checkbox" %}
+    <label for="{{ field.id_for_label }}">
+      {{ field }}
+      {{ field.label }}
+    </label>
+  {% else %}
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <small class="meta">(facultatif)</small>{% endif %}</label>
+    {{ field }}
+  {% endif %}
+  {% if field.errors %}
+    {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+  {% elif field.help_text %}
+    <small>{{ field.help_text }}</small>
+  {% endif %}
+{% endfor %}

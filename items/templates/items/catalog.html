@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Catalogue{% endblock %}
+{% block content %}
+<hgroup>
+  <h1>Objets à emprunter</h1>
+  <p>Des objets que vos voisins acceptent de prêter.</p>
+</hgroup>
+
+<form method="get" class="filters" role="search">
+  <div>
+    <label for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
+    {{ form.q }}
+  </div>
+  <div>
+    <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+    {{ form.category }}
+  </div>
+  <div>
+    <label for="{{ form.neighborhood.id_for_label }}">{{ form.neighborhood.label }}</label>
+    {{ form.neighborhood }}
+  </div>
+  <div><button type="submit">Filtrer</button></div>
+</form>
+
+{% if page.object_list %}
+  <ul class="item-list">
+    {% for item in page.object_list %}
+      <li>{% include "items/item_card.html" %}</li>
+    {% endfor %}
+  </ul>
+
+  {% if page.has_other_pages %}
+    <nav class="pagination" aria-label="Pagination">
+      {% if page.has_previous %}
+        <a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.previous_page_number }}">← Précédents</a>
+      {% else %}<span></span>{% endif %}
+      <span class="meta">Page {{ page.number }} sur {{ page.paginator.num_pages }}</span>
+      {% if page.has_next %}
+        <a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.next_page_number }}">Suivants →</a>
+      {% else %}<span></span>{% endif %}
+    </nav>
+  {% endif %}
+{% else %}
+  <article>
+    <p>Aucun objet ne correspond à votre recherche.</p>
+    {% if filter_query %}<a href="{% url 'items:catalog' %}">Voir tous les objets</a>{% endif %}
+  </article>
+{% endif %}
+{% endblock %}

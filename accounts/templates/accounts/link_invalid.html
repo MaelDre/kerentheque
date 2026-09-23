@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Lien invalide{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Ce lien n'est plus valable</h1></header>
+  <p>Les liens de connexion expirent au bout de 15 minutes et ne peuvent être utilisés qu'une seule fois.</p>
+  <a href="{% url 'accounts:login' %}" role="button">Recevoir un nouveau lien</a>
+</article>
+{% endblock %}

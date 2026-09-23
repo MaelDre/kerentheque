@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{% if onboarding %}Bienvenue{% else %}Mon profil{% endif %}{% endblock %}
+{% block content %}
+<article>
+  <header>
+    {% if onboarding %}
+      <h1>Bienvenue !</h1>
+      <p>Complétez votre profil pour commencer à prêter et emprunter.</p>
+    {% else %}
+      <h1>Mon profil</h1>
+    {% endif %}
+  </header>
+  {% if no_neighborhood %}
+    <article class="message message-warning" role="alert">
+      <p>Aucun quartier n'est encore disponible : l'inscription ne peut pas être finalisée pour le moment.</p>
+      {% if user.is_staff %}
+        <p>Créez au moins un quartier dans <a href="{% url 'admin:accounts_neighborhood_changelist' %}">l'administration</a>.</p>
+      {% else %}
+        <p>Merci de réessayer un peu plus tard.</p>
+      {% endif %}
+    </article>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <label>Email de connexion
+      <input type="email" value="{{ user.email }}" disabled>
+    </label>
+    <small>Jamais affiché publiquement.</small>
+    {% include "includes/form_fields.html" %}
+    <p class="meta">
+      Les coordonnées cochées sont transmises à l'autre personne quand vous envoyez une demande de contact,
+      ou quand vous acceptez une demande reçue.
+      {% if form.accept_terms %}Consultez la <a href="{% url 'accounts:privacy' %}" target="_blank">politique de confidentialité</a>.{% endif %}
+    </p>
+    <button type="submit">Enregistrer</button>
+  </form>
+</article>
+{% if not onboarding %}
+<p><a href="{% url 'accounts:delete' %}">Supprimer mon compte</a></p>
+{% endif %}
+{% endblock %}

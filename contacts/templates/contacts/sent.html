@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Mes demandes{% endblock %}
+{% block content %}
+<h1>Mes demandes</h1>
+{% for req in requests %}
+  <article>
+    <header>
+      <strong>
+        {% if req.item.deleted_at is None and req.item.owner.is_active %}
+          <a href="{{ req.item.get_absolute_url }}">{{ req.item_name }}</a>
+        {% else %}{{ req.item_name }}{% endif %}
+      </strong>
+      · {% include "contacts/status.html" %}
+      <br><span class="meta">Chez {{ req.item.owner.display_name }} · envoyée le {{ req.created_at|date:"j F Y" }}</span>
+    </header>
+    {% if req.status == "accepted" %}
+      <p>{{ req.item.owner.display_name }} a accepté votre demande. Vous pouvez maintenant organiser le prêt :</p>
+      <ul>
+        {% if req.owner_email %}<li>Email : <a href="mailto:{{ req.owner_email }}">{{ req.owner_email }}</a></li>{% endif %}
+        {% if req.owner_phone %}<li>Téléphone : <a href="tel:{{ req.owner_phone }}">{{ req.owner_phone }}</a></li>{% endif %}
+        {% if not req.owner_email and not req.owner_phone %}<li class="meta">Coordonnées plus disponibles.</li>{% endif %}
+      </ul>
+    {% elif req.status == "pending" %}
+      <p class="meta">En attente de la réponse du propriétaire.</p>
+    {% elif req.status == "refused" %}
+      <p class="meta">Le propriétaire n'a pas donné suite à cette demande.</p>
+    {% elif req.status == "cancelled" %}
+      <p class="meta">Cet objet n'est plus proposé.</p>
+    {% endif %}
+    {% if req.message %}<p class="description meta">Votre message : {{ req.message }}</p>{% endif %}
+  </article>
+{% empty %}
+  <p>Vous n'avez encore envoyé aucune demande. <a href="{% url 'items:catalog' %}">Parcourir le catalogue</a></p>
+{% endfor %}
+{% endblock %}

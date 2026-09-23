@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Connexion</h1></header>
+  <p>Pas de mot de passe : saisissez votre adresse email et nous vous enverrons un lien de connexion.
+     Si vous n'avez pas encore de compte, il sera créé automatiquement.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <button type="submit">Recevoir mon lien de connexion</button>
+  </form>
+</article>
+{% endblock %}

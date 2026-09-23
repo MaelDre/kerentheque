@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Signaler{% endblock %}
+{% block content %}
+<article>
+  <header>
+    <h1>Signaler un problème</h1>
+    <p>À propos de « {{ item.name }} », proposé par {{ item.owner.pseudo }}.</p>
+  </header>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <div class="actions">
+      <button type="submit">Envoyer le signalement</button>
+      <a href="{{ item.get_absolute_url }}" role="button" class="outline">Annuler</a>
+    </div>
+  </form>
+</article>
+{% endblock %}

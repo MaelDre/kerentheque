@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Demandes reçues{% endblock %}
+{% block content %}
+<h1>Demandes reçues</h1>
+{% for req in requests %}
+  <article>
+    <header>
+      <strong>{{ req.item_name }}</strong> · {% include "contacts/status.html" %}
+      <br><span class="meta">
+        De <strong>{{ req.requester.display_name }}</strong>{% if req.requester.neighborhood %} ({{ req.requester.neighborhood }}){% endif %}
+        · le {{ req.created_at|date:"j F Y à H:i" }}
+      </span>
+    </header>
+    {% if req.message %}<p class="description">« {{ req.message }} »</p>{% endif %}
+    {% if req.requester_email or req.requester_phone %}
+      <p>Coordonnées de {{ req.requester.display_name }} :</p>
+      <ul>
+        {% if req.requester_email %}<li>Email : <a href="mailto:{{ req.requester_email }}">{{ req.requester_email }}</a></li>{% endif %}
+        {% if req.requester_phone %}<li>Téléphone : <a href="tel:{{ req.requester_phone }}">{{ req.requester_phone }}</a></li>{% endif %}
+      </ul>
+    {% endif %}
+    {% if req.status == "pending" %}
+      <footer class="actions">
+        <form method="post" action="{% url 'contacts:accept' req.pk %}">
+          {% csrf_token %}
+          <button type="submit">Accepter et partager mes coordonnées</button>
+        </form>
+        <form method="post" action="{% url 'contacts:refuse' req.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="secondary outline">Refuser</button>
+        </form>
+      </footer>
+    {% endif %}
+  </article>
+{% empty %}
+  <p>Vous n'avez reçu aucune demande pour le moment.</p>
+{% endfor %}
+{% endblock %}

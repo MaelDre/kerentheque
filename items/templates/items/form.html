@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}Modifier « {{ item.name }} »{% else %}Prêter un objet{% endif %}{% endblock %}
+{% block content %}
+<article>
+  <header>
+    <h1>{% if item %}Modifier « {{ item.name }} »{% else %}Prêter un objet{% endif %}</h1>
+    {% if not item %}<p>L'objet sera visible par tous dans le catalogue, avec votre pseudo et votre quartier.</p>{% endif %}
+  </header>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <div class="actions">
+      <button type="submit">{% if item %}Enregistrer{% else %}Ajouter au catalogue{% endif %}</button>
+      <a href="{% if item %}{{ item.get_absolute_url }}{% else %}{% url 'items:mine' %}{% endif %}" role="button" class="outline">Annuler</a>
+    </div>
+  </form>
+</article>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Supprimer « {{ item.name }} »{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Supprimer « {{ item.name }} » ?</h1></header>
+  <p>L'objet sera retiré du catalogue.</p>
+  {% if pending %}
+    <p>{{ pending }} demande{{ pending|pluralize }} en attente sur cet objet {{ pending|pluralize:"sera annulée,seront annulées" }}.</p>
+  {% endif %}
+  <form method="post" class="actions">
+    {% csrf_token %}
+    <button type="submit" class="secondary">Supprimer</button>
+    <a href="{% url 'items:mine' %}" role="button" class="outline">Annuler</a>
+  </form>
+</article>
+{% endblock %}

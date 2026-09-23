@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Introuvable{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Page ou objet introuvable</h1></header>
+  <p>Cet objet n'est peut-être plus proposé, ou l'adresse est incorrecte.</p>
+  <a href="{% url 'items:catalog' %}" role="button">Retour au catalogue</a>
+</article>
+{% endblock %}

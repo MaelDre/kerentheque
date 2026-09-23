@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Supprimer mon compte{% endblock %}
+{% block content %}
+<article>
+  <header><h1>Supprimer mon compte</h1></header>
+  <p>La suppression est définitive :</p>
+  <ul>
+    <li>votre email, votre téléphone et votre pseudo sont effacés ;</li>
+    <li>vos objets disparaissent du catalogue ;</li>
+    <li>vos demandes en attente, envoyées ou reçues, sont annulées.</li>
+  </ul>
+  <p class="meta">Les coordonnées déjà transmises à d'autres membres par email ne peuvent pas être récupérées.</p>
+  <form method="post" class="actions">
+    {% csrf_token %}
+    <button type="submit" class="secondary">Oui, supprimer définitivement</button>
+    <a href="{% url 'accounts:profile' %}" role="button" class="outline">Annuler</a>
+  </form>
+</article>
+{% endblock %}

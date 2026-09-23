@@ -1,0 +1,13 @@
+{% autoescape off %}Bonjour {{ req.requester.pseudo }},
+
+{{ owner.pseudo }} a accepté votre demande pour « {{ req.item_name }} ».
+
+Vous pouvez maintenant organiser le prêt :
+{% if req.owner_email %}- Email : {{ req.owner_email }}
+{% endif %}{% if req.owner_phone %}- Téléphone : {{ req.owner_phone }}
+{% endif %}
+Retrouvez toutes vos demandes ici :
+{{ url }}
+
+— Kerentheque
+{% endautoescape %}

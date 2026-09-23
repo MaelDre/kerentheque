@@ -1,0 +1,16 @@
+{% autoescape off %}Bonjour {{ owner.pseudo }},
+
+{{ req.requester.pseudo }} ({{ req.requester.neighborhood }}) aimerait emprunter votre objet « {{ req.item_name }} ».
+{% if req.message %}
+Son message :
+« {{ req.message }} »
+{% endif %}
+Ses coordonnées :
+{% if req.requester_email %}- Email : {{ req.requester_email }}
+{% endif %}{% if req.requester_phone %}- Téléphone : {{ req.requester_phone }}
+{% endif %}
+Pour accepter (et lui transmettre vos coordonnées) ou refuser cette demande :
+{{ url }}
+
+— Kerentheque
+{% endautoescape %}
