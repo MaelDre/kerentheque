@@ -4,7 +4,7 @@
 <article>
   <header>
     <h1>{% if item %}Modifier « {{ item.name }} »{% else %}Prêter un objet{% endif %}</h1>
-    {% if not item %}<p>L'objet sera visible par tous dans le catalogue, avec votre pseudo et votre quartier.</p>{% endif %}
+    {% if not item %}<p>L'objet sera visible par tous dans le catalogue, avec votre quartier. Votre pseudo n'est montré qu'aux membres connectés.</p>{% endif %}
   </header>
   <form method="post">
     {% csrf_token %}

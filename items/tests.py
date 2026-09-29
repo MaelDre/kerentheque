@@ -111,6 +111,13 @@ class CatalogTests(TestCase):
         make_item(owner=self.alice, name="Perceuse")
         response = self.catalog()
         self.assertContains(response, "Perceuse")
+        self.assertContains(response, "Centre")
+        self.assertNotContains(response, "Alice")
+
+    def test_member_sees_owner_in_catalog(self):
+        make_item(owner=self.alice, name="Perceuse")
+        self.client.force_login(self.bob)
+        response = self.catalog()
         self.assertContains(response, "Alice")
         self.assertContains(response, "Centre")
 
@@ -162,7 +169,17 @@ class CatalogTests(TestCase):
 
     def test_detail_for_anonymous_invites_login(self):
         item = make_item(owner=self.alice)
-        self.assertContains(self.client.get(item.get_absolute_url()), "Se connecter pour contacter")
+        response = self.client.get(item.get_absolute_url())
+        self.assertContains(response, "Se connecter pour contacter le prêteur")
+        self.assertContains(response, "Centre")
+        self.assertNotContains(response, "Alice")
+
+    def test_detail_for_member_shows_owner(self):
+        item = make_item(owner=self.alice)
+        self.client.force_login(self.bob)
+        response = self.client.get(item.get_absolute_url())
+        self.assertContains(response, "Prêté par <strong>Alice</strong>")
+        self.assertContains(response, "Centre")
 
     def test_detail_for_owner_has_no_request_form(self):
         item = make_item(owner=self.alice)

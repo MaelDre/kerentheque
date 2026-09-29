@@ -5,7 +5,7 @@
 <article>
   <header>
     <h1>{{ item.name }}</h1>
-    <p class="meta">{{ item.category }} · Prêté par <strong>{{ item.owner.pseudo }}</strong> · {{ item.owner.neighborhood }}</p>
+    <p class="meta">{{ item.category }} · {% if user.is_authenticated %}Prêté par <strong>{{ item.owner.pseudo }}</strong> · {% endif %}{{ item.owner.neighborhood }}</p>
   </header>
   {% if item.description %}
     <p class="description">{{ item.description }}</p>
@@ -23,7 +23,7 @@
 {% elif not user.is_authenticated %}
   <article>
     <p>Envie d'emprunter cet objet ?</p>
-    <a href="{% url 'accounts:login' %}" role="button">Se connecter pour contacter {{ item.owner.pseudo }}</a>
+    <a href="{% url 'accounts:login' %}" role="button">Se connecter pour contacter le prêteur</a>
   </article>
 
 {% elif existing_request %}
