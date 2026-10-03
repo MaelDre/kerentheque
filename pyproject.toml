@@ -5,5 +5,6 @@ requires-python = ">=3.12"
 dependencies = [
     "django>=5.2,<5.3",
     "django-sesame>=3.2.3",
+    "gunicorn>=26.2.0",
     "whitenoise>=6.12.0",
 ]

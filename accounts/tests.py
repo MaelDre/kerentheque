@@ -3,8 +3,9 @@ import time
 from unittest import mock
 
 from django.core import mail
-from django.core.cache import cache
+from django.core.cache import cache, caches
 from django.core.management import CommandError, call_command
+from django.db import connection
 from django.db.models import ProtectedError
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -61,6 +62,16 @@ class MagicLinkTests(TestCase):
         self.client.post(reverse("accounts:login"), {"email": "a@example.com"})
         self.client.post(reverse("accounts:login"), {"email": "a@example.com"})
         self.assertEqual(len(mail.outbox), 1)
+
+    def test_throttle_is_shared_and_expires(self):
+        self.client.post(reverse("accounts:login"), {"email": "a@example.com"})
+        # Une autre connexion au cache (comme celle d'un autre processus) voit la limite.
+        self.assertIsNotNone(caches.create_connection("default").get("login-link:a@example.com"))
+        # Une minute plus tard, la limite a expiré et un nouveau lien est envoyé.
+        with connection.cursor() as cursor:
+            cursor.execute("UPDATE django_cache SET expires = %s", [timezone.now() - timezone.timedelta(seconds=1)])
+        self.client.post(reverse("accounts:login"), {"email": "a@example.com"})
+        self.assertEqual(len(mail.outbox), 2)
 
     def test_get_does_not_consume_link_and_post_logs_in(self):
         user = make_user()

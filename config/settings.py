@@ -146,8 +146,14 @@ else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-# Cache (limitation des demandes de lien de connexion)
-CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+# Cache (limitation des demandes de lien de connexion), stocké en base pour être partagé entre
+# les processus du serveur et survivre aux redémarrages. Table créée par `createcachetable`.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "django_cache",
+    }
+}
 
 
 # Sécurité en production
