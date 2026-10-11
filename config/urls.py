@@ -9,5 +9,6 @@ urlpatterns = [
     path("compte/", include("accounts.urls")),
     path("", include("contacts.urls")),
     path("", include("moderation.urls")),
+    path("", include("feedback.urls")),
     path("", include("items.urls")),
 ]

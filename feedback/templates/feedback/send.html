@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Nous contacter{% endblock %}
+{% block content %}
+<article>
+  <header>
+    <h1>Nous contacter</h1>
+    <p>Une question, une idée d'amélioration ou un commentaire ? Écrivez-nous.</p>
+  </header>
+  <form method="post">
+    {% csrf_token %}
+    {% include "includes/form_fields.html" %}
+    <div class="actions">
+      <button type="submit">Envoyer</button>
+      <a href="{% url 'items:catalog' %}" role="button" class="outline">Annuler</a>
+    </div>
+  </form>
+</article>
+{% endblock %}

@@ -25,6 +25,7 @@
                 <li><a href="{% url 'contacts:sent' %}">Mes demandes</a></li>
                 <li><a href="{% url 'contacts:received' %}">Demandes reçues</a></li>
                 <li><a href="{% url 'accounts:profile' %}">Mon profil</a></li>
+                <li><a href="{% url 'feedback:send' %}">Nous contacter</a></li>
                 <li>
                   <form method="post" action="{% url 'accounts:logout' %}" class="inline-form">
                     {% csrf_token %}

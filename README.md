@@ -46,9 +46,9 @@ uv run --env-file .env python manage.py purge_unused_accounts
 
 Toutes les variables d'environnement sont documentées dans `.env.example`.
 En production (`DEBUG=false`), `SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`,
-`SITE_URL` et les paramètres SMTP doivent être renseignés. `DATABASE_PATH` doit
-pointer vers un disque persistant. Les fichiers statiques sont collectés au build de
-l'image Docker.
+`SITE_URL`, `FEEDBACK_RECIPIENT_EMAIL` et les paramètres SMTP doivent être renseignés.
+`DATABASE_PATH` doit pointer vers un disque persistant. Les fichiers statiques sont
+collectés au build de l'image Docker.
 
 ## Déploiement sur Railway
 
@@ -70,6 +70,7 @@ est stockée sur un volume Railway persistant.
    | `CSRF_TRUSTED_ORIGINS` | `https://<app>.up.railway.app` |
    | `SITE_URL` | `https://<app>.up.railway.app` |
    | `DATABASE_PATH` | `/data/db.sqlite3` |
+   | `FEEDBACK_RECIPIENT_EMAIL` | adresse recevant les messages du formulaire de contact |
    | `DEFAULT_FROM_EMAIL`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS` | paramètres SMTP (SMTP sortant autorisé sur le plan Pro) |
 
 4. Générer le domaine public (`*.up.railway.app`) dans l'onglet *Networking* du service.

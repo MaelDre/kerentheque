@@ -33,6 +33,9 @@ CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 # URL publique du site, utilisée pour construire les liens absolus des emails.
 SITE_URL = (os.environ.get("SITE_URL") or "http://localhost:8000").rstrip("/")
 
+# Adresse recevant les messages du formulaire de contact (questions, idées, commentaires).
+FEEDBACK_RECIPIENT_EMAIL = os.environ.get("FEEDBACK_RECIPIENT_EMAIL") or "noreply@localhost"
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     "items",
     "contacts",
     "moderation",
+    "feedback",
 ]
 
 MIDDLEWARE = [
