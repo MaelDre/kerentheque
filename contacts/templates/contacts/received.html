@@ -6,7 +6,7 @@
   <article>
     <header>
       <strong>{{ req.item_name }}</strong> · {% include "contacts/status.html" %}
-      <br><span class="meta">
+      <br><span class="small meta">
         De <strong>{{ req.requester.display_name }}</strong>{% if req.requester.neighborhood %} ({{ req.requester.neighborhood }}){% endif %}
         · le {{ req.created_at|date:"j F Y à H:i" }}
       </span>
@@ -27,7 +27,7 @@
         </form>
         <form method="post" action="{% url 'contacts:refuse' req.pk %}">
           {% csrf_token %}
-          <button type="submit" class="secondary outline">Refuser</button>
+          <button type="submit" class="secondary">Refuser</button>
         </form>
       </footer>
     {% endif %}

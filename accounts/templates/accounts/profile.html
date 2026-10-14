@@ -27,7 +27,7 @@
     </label>
     <small>Jamais affiché publiquement.</small>
     {% include "includes/form_fields.html" %}
-    <p class="meta">
+    <p class="small meta">
       Les coordonnées cochées sont transmises à l'autre personne quand vous envoyez une demande de contact,
       ou quand vous acceptez une demande reçue.
       {% if form.accept_terms %}Consultez la <a href="{% url 'accounts:privacy' %}" target="_blank">politique de confidentialité</a>.{% endif %}

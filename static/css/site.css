@@ -1,53 +1,70 @@
-/* Compléments à Pico CSS, propres à Kerentheque. */
-
-:root {
-  --kt-success: #1f7a3d;
-  --kt-muted: var(--pico-muted-color);
-}
+/* Composants propres à Kerentheque. Uniquement des tokens du design system. */
 
 body > header nav { flex-wrap: wrap; }
-.brand { text-decoration: none; }
+.brand { color: var(--ink); text-decoration: none; }
 
-/* Messages flash */
-.message { padding: 0.75rem 1rem; margin-bottom: 1rem; }
-.message-success { border-left: 4px solid var(--kt-success); }
-.message-error { border-left: 4px solid var(--pico-del-color); }
-.message-warning { border-left: 4px solid #c98a00; }
+/* Messages flash : le texte porte le sens, la couleur le renforce. */
+.message {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border-left: var(--space-1) solid var(--border-strong);
+}
+.message-success { border-left-color: var(--brand); background: var(--brand-tint); }
+.message-error { border-left-color: var(--danger); }
+.message-warning { border-left-color: var(--ink); background: var(--surface-sunken); }
 
 /* Bouton d'apparence lien (déconnexion dans le menu) */
 .inline-form { margin: 0; }
 .link-button {
-  background: none; border: none; padding: 0; margin: 0; width: auto;
-  color: var(--pico-primary); cursor: pointer; font-size: inherit;
+  background: none; border: none; padding: 0; margin: 0;
+  width: 100%; text-align: start;
+  color: var(--brand); cursor: pointer; font-size: inherit;
 }
 
 /* Catalogue */
-.filters { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+.filters {
+  display: grid; gap: 0 var(--space-4); grid-template-columns: 1fr;
+  padding: var(--space-4);
+  margin-bottom: var(--space-6);
+  background: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
 @media (min-width: 768px) {
   .filters { grid-template-columns: 2fr 1fr 1fr auto; align-items: end; }
 }
 .item-list { list-style: none; padding: 0; }
 .item-list li { list-style: none; }
-.item-card { margin-bottom: 1rem; }
+.item-card { margin-bottom: var(--space-4); padding: var(--space-4); }
 .item-card header, .item-card footer { margin-bottom: 0; }
-.item-card h3 { margin-bottom: 0.25rem; }
-.meta { color: var(--kt-muted); font-size: 0.9em; }
+.item-card h3 { margin-bottom: var(--space-1); }
+.meta { color: var(--ink-muted); }
 .description { white-space: pre-line; overflow-wrap: anywhere; }
 
-/* Statuts des demandes */
-.status { font-weight: 600; white-space: nowrap; }
-.status-pending { color: #c98a00; }
-.status-accepted { color: var(--kt-success); }
-.status-refused, .status-cancelled { color: var(--kt-muted); }
+/* Statuts des demandes : pastille portant le libellé du statut */
+.status {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.status-pending { background: var(--accent); }
+.status-accepted { background: var(--brand-tint); }
+.status-refused, .status-cancelled { background: var(--surface-sunken); color: var(--ink-muted); }
 
-.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .actions form { margin: 0; }
 .actions button, .actions [role="button"] { width: auto; margin: 0; }
 
-.pagination { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.pagination { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
 
 /* Évite tout débordement horizontal sur petit écran */
 main, article { overflow-wrap: anywhere; }
 
 /* Erreurs de formulaire */
-.field-error { color: var(--pico-del-color); display: block; margin-top: -0.5rem; margin-bottom: 1rem; }
+.field-error {
+  color: var(--danger);
+  display: block;
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-4);
+}

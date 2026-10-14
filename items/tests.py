@@ -205,3 +205,20 @@ class ErrorPagesTests(TestCase):
         from django.template.loader import render_to_string
 
         self.assertIn("Une erreur est survenue", render_to_string("500.html"))
+
+
+class DesignSystemTests(TestCase):
+    """The design system must be loaded, in light theme, on regular and standalone pages."""
+
+    def assert_design_system(self, html):
+        self.assertIn("design-system/tokens.css", html)
+        self.assertIn("css/theme.css", html)
+        self.assertIn('data-theme="light"', html)
+
+    def test_base_layout_loads_design_system(self):
+        self.assert_design_system(self.client.get(reverse("items:catalog")).content.decode())
+
+    def test_500_page_loads_design_system(self):
+        from django.template.loader import render_to_string
+
+        self.assert_design_system(render_to_string("500.html"))

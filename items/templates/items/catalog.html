@@ -34,7 +34,7 @@
       {% if page.has_previous %}
         <a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.previous_page_number }}">← Précédents</a>
       {% else %}<span></span>{% endif %}
-      <span class="meta">Page {{ page.number }} sur {{ page.paginator.num_pages }}</span>
+      <span class="small meta">Page {{ page.number }} sur {{ page.paginator.num_pages }}</span>
       {% if page.has_next %}
         <a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.next_page_number }}">Suivants →</a>
       {% else %}<span></span>{% endif %}

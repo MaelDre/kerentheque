@@ -1,18 +1,20 @@
 {% load static %}<!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
   <title>{% block title %}Kerentheque{% endblock %} · Kerentheque</title>
+  <link rel="stylesheet" href="{% static 'design-system/tokens.css' %}">
   <link rel="stylesheet" href="{% static 'css/pico.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
   <link rel="stylesheet" href="{% static 'css/site.css' %}">
 </head>
 <body>
   <header class="container">
     <nav>
       <ul>
-        <li><a href="{% url 'items:catalog' %}" class="brand"><strong>Kerentheque</strong></a></li>
+        <li><a href="{% url 'items:catalog' %}" class="brand title">Kerentheque</a></li>
       </ul>
       <ul>
         {% if user.is_authenticated %}
@@ -36,7 +38,7 @@
             </details>
           </li>
         {% else %}
-          <li><a href="{% url 'accounts:login' %}" role="button">Se connecter</a></li>
+          <li><a href="{% url 'accounts:login' %}" role="button" class="secondary">Se connecter</a></li>
         {% endif %}
       </ul>
     </nav>

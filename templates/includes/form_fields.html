@@ -12,7 +12,7 @@
       {{ field.label }}
     </label>
   {% else %}
-    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <small class="meta">(facultatif)</small>{% endif %}</label>
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <small class="small meta">(facultatif)</small>{% endif %}</label>
     {{ field }}
   {% endif %}
   {% if field.errors %}

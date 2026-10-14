@@ -11,7 +11,7 @@
     {% include "includes/form_fields.html" %}
     <div class="actions">
       <button type="submit">{% if item %}Enregistrer{% else %}Ajouter au catalogue{% endif %}</button>
-      <a href="{% if item %}{{ item.get_absolute_url }}{% else %}{% url 'items:mine' %}{% endif %}" role="button" class="outline">Annuler</a>
+      <a href="{% if item %}{{ item.get_absolute_url }}{% else %}{% url 'items:mine' %}{% endif %}" role="button" class="secondary">Annuler</a>
     </div>
   </form>
 </article>

@@ -5,19 +5,19 @@
 <article>
   <header>
     <h1>{{ item.name }}</h1>
-    <p class="meta">{{ item.category }} · {% if user.is_authenticated %}Prêté par <strong>{{ item.owner.pseudo }}</strong> · {% endif %}{{ item.owner.neighborhood }}</p>
+    <p class="small meta">{{ item.category }} · {% if user.is_authenticated %}Prêté par <strong>{{ item.owner.pseudo }}</strong> · {% endif %}{{ item.owner.neighborhood }}</p>
   </header>
   {% if item.description %}
     <p class="description">{{ item.description }}</p>
   {% else %}
-    <p class="meta">Pas de description.</p>
+    <p class="small meta">Pas de description.</p>
   {% endif %}
 </article>
 
 {% if is_owner %}
   <div class="actions">
     <a href="{% url 'items:edit' item.pk %}" role="button">Modifier</a>
-    <a href="{% url 'items:delete' item.pk %}" role="button" class="secondary outline">Supprimer</a>
+    <a href="{% url 'items:delete' item.pk %}" role="button" class="secondary danger">Supprimer</a>
   </div>
 
 {% elif not user.is_authenticated %}
@@ -45,7 +45,7 @@
         {% if shared_contact.email %}<li>Email : {{ shared_contact.email }}</li>{% endif %}
         {% if shared_contact.phone %}<li>Téléphone : {{ shared_contact.phone }}</li>{% endif %}
       </ul>
-      <p class="meta"><a href="{% url 'accounts:profile' %}">Modifier mes réglages de partage</a></p>
+      <p class="small meta"><a href="{% url 'accounts:profile' %}">Modifier mes réglages de partage</a></p>
       {% include "includes/form_fields.html" with form=request_form %}
       <button type="submit">Envoyer ma demande</button>
     </form>

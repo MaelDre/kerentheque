@@ -9,7 +9,7 @@
       <li>
         <article class="item-card">
           <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
-          <p class="meta">{{ item.category }} · ajouté le {{ item.created_at|date:"j F Y" }}</p>
+          <p class="small meta">{{ item.category }} · ajouté le {{ item.created_at|date:"j F Y" }}</p>
           <div class="actions">
             <a href="{% url 'items:edit' item.pk %}">Modifier</a>
             <a href="{% url 'items:delete' item.pk %}">Supprimer</a>

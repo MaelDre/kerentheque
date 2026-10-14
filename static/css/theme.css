@@ -1,0 +1,144 @@
+/*
+ * Bridge between the design system (design-system/tokens.css) and Pico CSS.
+ * Loaded after Pico: maps design tokens onto --pico-* variables and overrides
+ * the few Pico behaviours the design system contradicts (shadows, focus,
+ * touch targets). Kerentheque-specific components live in site.css.
+ *
+ * Selector :root[data-theme="light"] is at least as specific as Pico's own
+ * light-theme selector, so these values win without !important.
+ */
+
+:root[data-theme="light"] {
+  /* Base type size stays at 16px on every screen width (Pico scales it up). */
+  --pico-font-size: 100%;
+  --pico-font-family-sans-serif: var(--font-sans);
+  --pico-text-selection-color: var(--brand-tint);
+
+  /* Surfaces and text */
+  --pico-background-color: var(--surface);
+  --pico-color: var(--ink);
+  --pico-muted-color: var(--ink-muted);
+  --pico-muted-border-color: var(--border);
+  --pico-h1-color: var(--ink);
+  --pico-h2-color: var(--ink);
+  --pico-h3-color: var(--ink);
+  --pico-h4-color: var(--ink);
+  --pico-h5-color: var(--ink);
+  --pico-h6-color: var(--ink);
+  --pico-card-background-color: var(--surface-raised);
+  --pico-card-sectioning-background-color: transparent;
+  --pico-card-border-color: var(--border);
+  --pico-del-color: var(--danger);
+  --pico-ins-color: var(--brand);
+  --pico-mark-background-color: var(--accent);
+  --pico-mark-color: var(--ink);
+
+  /* Primary actions and links. The design system has no hover shade, so it is derived from brand. */
+  --pico-primary: var(--brand);
+  --pico-primary-background: var(--brand);
+  --pico-primary-border: var(--brand);
+  --pico-primary-inverse: var(--on-brand);
+  --pico-primary-underline: color-mix(in srgb, var(--brand) 50%, transparent);
+  --pico-primary-hover: color-mix(in srgb, var(--brand) 80%, black);
+  --pico-primary-hover-background: color-mix(in srgb, var(--brand) 80%, black);
+  --pico-primary-hover-border: color-mix(in srgb, var(--brand) 80%, black);
+  --pico-primary-hover-underline: color-mix(in srgb, var(--brand) 80%, black);
+
+  /* Secondary actions: raised surface, strong border, ink text */
+  --pico-secondary: var(--ink);
+  --pico-secondary-background: var(--surface-raised);
+  --pico-secondary-border: var(--border-strong);
+  --pico-secondary-inverse: var(--ink);
+  --pico-secondary-hover: var(--ink);
+  --pico-secondary-hover-background: var(--surface-sunken);
+  --pico-secondary-hover-border: var(--border-strong);
+
+  /* Form controls */
+  --pico-form-element-background-color: var(--surface-raised);
+  --pico-form-element-active-background-color: var(--surface-raised);
+  --pico-form-element-border-color: var(--border-strong);
+  --pico-form-element-active-border-color: var(--brand);
+  --pico-form-element-color: var(--ink);
+  --pico-form-element-placeholder-color: var(--ink-muted);
+  --pico-form-element-valid-border-color: var(--border-strong);
+  --pico-form-element-valid-active-border-color: var(--brand);
+  --pico-form-element-invalid-border-color: var(--danger);
+  --pico-form-element-invalid-active-border-color: var(--danger);
+  --pico-form-element-spacing-vertical: var(--space-3);
+  --pico-form-element-spacing-horizontal: var(--space-4);
+
+  /* Account menu */
+  --pico-dropdown-background-color: var(--surface-raised);
+  --pico-dropdown-border-color: var(--border);
+  --pico-dropdown-color: var(--ink);
+  --pico-dropdown-hover-background-color: var(--surface-sunken);
+  --pico-nav-link-spacing-vertical: var(--space-3); /* nav items reach 48px */
+
+  /* Shapes: thin rules instead of shadows */
+  --pico-border-radius: var(--radius-md);
+  --pico-box-shadow: none;
+  --pico-card-box-shadow: none;
+  --pico-dropdown-box-shadow: none;
+  --pico-button-box-shadow: none;
+  --pico-button-hover-box-shadow: none;
+
+  /* Pico's focus halos are disabled; the focus ring is defined below. */
+  --pico-primary-focus: transparent;
+  --pico-secondary-focus: transparent;
+  --pico-contrast-focus: transparent;
+  --pico-form-element-focus-color: transparent;
+}
+
+/* Headings: values mirror the .display, .title and .subtitle styles of tokens.css. */
+h1, h2 { font-family: var(--font-display); }
+h1 { --pico-font-size: 32px; --pico-line-height: 38px; --pico-font-weight: 700; letter-spacing: -0.02em; }
+h2 { --pico-font-size: 22px; --pico-line-height: 28px; --pico-font-weight: 600; letter-spacing: -0.01em; }
+h3 { --pico-font-size: 18px; --pico-line-height: 26px; --pico-font-weight: 600; }
+
+/* Cards are separated by a thin rule, not a shadow. */
+article {
+  border: var(--pico-border-width) solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* Keyboard focus: solid 2px brand ring, offset by 2px, on every interactive element. */
+:is(a, button, [role="button"], input, select, textarea, summary):focus-visible,
+details.dropdown > summary:not([role]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Touch targets: 44px minimum. */
+button, [role="button"], input:not([type="checkbox"], [type="radio"]), select, summary {
+  min-height: 44px;
+}
+nav details.dropdown > summary:not([role]) { height: auto; }
+details.dropdown > summary + ul li a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* Input text never below 16px, so mobile browsers do not zoom in. */
+input, select, textarea { font-size: max(1rem, 16px); }
+
+/* Destructive actions */
+:is(button, [role="button"]).danger,
+:is(button, [role="button"]).danger:is(:hover, :active, :focus) {
+  --pico-background-color: var(--danger);
+  --pico-border-color: var(--danger);
+  --pico-color: var(--on-danger);
+}
+:is(button, [role="button"]).danger:hover {
+  --pico-background-color: color-mix(in srgb, var(--danger) 80%, black);
+}
+:is(button, [role="button"]).secondary.danger,
+:is(button, [role="button"]).secondary.danger:is(:active, :focus) {
+  --pico-background-color: var(--surface-raised);
+  --pico-border-color: var(--danger);
+  --pico-color: var(--danger);
+}
+:is(button, [role="button"]).secondary.danger:hover {
+  --pico-background-color: var(--danger);
+  --pico-color: var(--on-danger);
+}

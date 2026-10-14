@@ -119,7 +119,8 @@ USE_TZ = True
 
 # Fichiers statiques
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# The design system is served as-is under static/design-system/ (single source of truth).
+STATICFILES_DIRS = [BASE_DIR / "static", ("design-system", BASE_DIR / "design-system")]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
