@@ -26,6 +26,6 @@
 
 ## 5. Mise en ligne (manuelle, sur Railway)
 
-- [ ] 5.1 Créer le service Railway depuis le dépôt, attacher le volume `/data`, renseigner les variables et générer le domaine public
-- [ ] 5.2 Vérifier le premier déploiement dans les logs, créer le superutilisateur et un quartier via `railway ssh` et l'admin
-- [ ] 5.3 Recette : recevoir un lien de connexion par email, se connecter, compléter le profil, publier un objet, redéployer et constater que l'objet est toujours présent
+- [x] 5.1 Créer le service Railway depuis le dépôt, attacher le volume `/data`, renseigner les variables et générer le domaine public
+- [x] 5.2 Vérifier le premier déploiement dans les logs, créer le superutilisateur et un quartier via `railway ssh` et l'admin
+- [x] 5.3 Recette : recevoir un lien de connexion par email, se connecter, compléter le profil, publier un objet, redéployer et constater que l'objet est toujours présent
