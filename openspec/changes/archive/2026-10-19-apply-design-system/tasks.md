@@ -37,4 +37,4 @@
 - [x] 5.2 Lancer la suite de tests complète et vérifier qu'elle passe
 - [x] 5.3 Recette visuelle sur le catalogue, le détail d'un objet, le formulaire d'objet, les demandes reçues et envoyées, la connexion, le profil et la page 404 : polices et couleurs du DS, au plus une action principale par page ou par élément de liste
 - [x] 5.4 Recette d'accessibilité : affichage en clair avec l'OS en mode sombre, parcours complet au clavier avec focus visible, vue mobile (cibles de 44px, champs sans zoom), contrastes vérifiés dans l'inspecteur du navigateur
-- [ ] 5.5 Déployer sur Railway et vérifier que les polices se chargent en production (aucune erreur 404 sur `fonts/` dans l'onglet Réseau)
+- [x] 5.5 Déployer sur Railway et vérifier que les polices se chargent en production (aucune erreur 404 sur `fonts/` dans l'onglet Réseau)
