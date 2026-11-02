@@ -3,15 +3,15 @@
 body > header nav { flex-wrap: wrap; }
 .brand { color: var(--ink); text-decoration: none; }
 
-/* Messages flash : le texte porte le sens, la couleur le renforce. */
+/* Messages flash : le texte porte le sens, la couleur le renforce.
+   Le filet uniforme et les coins viennent du style des cartes (article) ; seule sa couleur change. */
 .message {
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-4);
-  border-left: var(--space-1) solid var(--border-strong);
 }
-.message-success { border-left-color: var(--brand); background: var(--brand-tint); }
-.message-error { border-left-color: var(--danger); }
-.message-warning { border-left-color: var(--ink); background: var(--surface-sunken); }
+.message-success { border-color: var(--brand); background: var(--brand-tint); }
+.message-error { border-color: var(--danger); }
+.message-warning { border-color: var(--border-strong); background: var(--surface-sunken); }
 
 /* Bouton d'apparence lien (déconnexion dans le menu) */
 .inline-form { margin: 0; }
