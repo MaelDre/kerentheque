@@ -22,6 +22,17 @@ body > header nav { flex-wrap: wrap; }
 }
 
 /* Catalogue */
+/* Bandeau de présentation du projet : une ligne, discret */
+.project-banner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  background: var(--brand-tint);
+  border-radius: var(--radius-lg);
+}
+.project-banner p { margin: 0; }
+.project-banner [role="button"] { width: auto; margin: 0; }
 .filters {
   display: grid; gap: 0 var(--space-4); grid-template-columns: 1fr;
   padding: var(--space-4);

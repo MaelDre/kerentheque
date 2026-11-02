@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Le projet{% endblock %}
+{% block content %}
+<article>
+  <header>
+    <hgroup>
+      <h1>Le projet</h1>
+      <p>Se prêter des objets entre voisins, simplement.</p>
+    </hgroup>
+  </header>
+
+  <h2>Pourquoi ?</h2>
+  <p>Beaucoup d'objets du quotidien, comme une perceuse, un escabeau, un appareil à raclette ou une tente,
+     ne servent que quelques heures par an. Le reste du temps, ils dorment au fond d'un placard.</p>
+  <p>Se les prêter entre voisins évite des achats inutiles, libère de la place chez soi et réduit les déchets.
+     C'est aussi une bonne occasion de faire connaissance avec les personnes qui habitent près de chez vous.</p>
+
+  <h2>Comment ça marche ?</h2>
+  <ol>
+    <li>Vous listez les objets que vous acceptez de prêter. Chaque objet peut être public, visible dans le
+        catalogue avec votre nom, ou privé.</li>
+    <li>Un voisin trouve un objet qui l'intéresse dans le catalogue et vous envoie une demande.</li>
+    <li>Si vous acceptez, vos coordonnées sont échangées. Le prêt s'organise ensuite directement entre vous,
+        hors de l'application.</li>
+  </ol>
+
+  <h2>Qui sommes-nous ?</h2>
+  <p>À ce stade, nous sommes un groupement d'habitants souhaitant apporter un peu de lien et de bon sens dans notre consommation.</p>
+  <p>Kerentheque est un projet bénévole porté par Maël et Camille, habitants de Lorient.</p>
+
+  <h2>Les prochaines étapes</h2>
+  <ul>
+    <li>Une phase de test avec un premier groupe d'habitants.</li>
+    <li>Des améliorations à partir de vos retours.
+        {% if user.is_authenticated %}Une idée, un problème ? <a href="{% url 'feedback:send' %}">Écrivez-nous</a>.{% endif %}</li>
+    <li>Une ouverture plus large, à toute la commune.</li>
+  </ul>
+</article>
+{% endblock %}

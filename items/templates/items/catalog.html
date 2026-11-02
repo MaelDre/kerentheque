@@ -6,6 +6,11 @@
   <p>Des objets que vos voisins acceptent de prêter.</p>
 </hgroup>
 
+<aside class="project-banner">
+  <p>Kerentheque est un projet local de prêt entre voisins.</p>
+  <a href="{% url 'project' %}" role="button" class="secondary">Découvrir le projet</a>
+</aside>
+
 <form method="get" class="filters" role="search">
   <div>
     <label for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
