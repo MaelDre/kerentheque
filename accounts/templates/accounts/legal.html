@@ -1,17 +1,30 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Mentions légales{% endblock %}
 {% block content %}
 <article>
-  <header><h1>Mentions légales</h1></header>
-  {# TEXTE PROVISOIRE : à compléter avant la mise en ligne. #}
+  <header>
+    <h1>Mentions légales</h1>
+    <p class="small meta">Dernière mise à jour : 11 novembre 2026</p>
+  </header>
+
   <h2>Éditeur</h2>
-  <p>[Nom de l'éditeur], [adresse], [email de contact].</p>
+  <p>Kerentheque est édité à titre non professionnel par Maël Dréano.<br>
+     Contact : {% include "includes/protected_email.html" with user="mael.dreano" domain="pm.me" %}</p>
+
   <h2>Hébergement</h2>
-  <p>[Nom de l'hébergeur], [adresse de l'hébergeur].</p>
+  <p>Railway Corporation<br>
+     548 Market St PMB 68956, San Francisco, CA 94104, États-Unis<br>
+     Les serveurs qui hébergent le site et ses données sont situés aux Pays-Bas (Union européenne).</p>
+
   <h2>Conditions d'utilisation</h2>
   <p>Kerentheque met en relation des habitants qui souhaitent se prêter des objets. Les prêts se
      déroulent directement entre les membres, hors de l'application, sous leur seule responsabilité.
      Chaque membre s'engage à ne publier que des objets qu'il possède et accepte réellement de prêter,
      et à utiliser les coordonnées reçues uniquement pour organiser un prêt.</p>
+
+  <h2>Données personnelles</h2>
+  <p>Le traitement de vos données est décrit dans la <a href="{% url 'accounts:privacy' %}">politique de confidentialité</a>.</p>
 </article>
 {% endblock %}
+{% block scripts %}<script src="{% static 'js/protected-email.js' %}" defer></script>{% endblock %}

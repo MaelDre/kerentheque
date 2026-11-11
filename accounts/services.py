@@ -11,7 +11,12 @@ def delete_account(user):
         now = timezone.now()
         cancel_pending_for_user(user)
         user.items.filter(deleted_at__isnull=True).update(deleted_at=now)
-        ContactRequest.objects.filter(requester=user).update(requester_email="", requester_phone="")
+        # Free-text fields may contain personal data. Item names are kept so other
+        # members' history stays readable; report reasons are kept for moderation.
+        for item in user.items.exclude(description=""):
+            item.description = ""
+            item.save(update_fields=["description"])  # save() also refreshes search_text
+        ContactRequest.objects.filter(requester=user).update(requester_email="", requester_phone="", message="")
         ContactRequest.objects.filter(item__owner=user).update(owner_email="", owner_phone="")
 
         user.email = f"deleted-{user.pk}@invalid"

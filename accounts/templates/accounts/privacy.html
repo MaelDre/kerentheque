@@ -1,17 +1,41 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Confidentialité{% endblock %}
 {% block content %}
 <article>
-  <header><h1>Politique de confidentialité</h1></header>
-  {# TEXTE PROVISOIRE : à relire et compléter avant la mise en ligne. #}
+  <header>
+    <h1>Politique de confidentialité</h1>
+    <p class="small meta">Dernière mise à jour : 11 novembre 2026</p>
+  </header>
+
+  <h2>Responsable du traitement</h2>
+  <p>Vos données sont traitées par Maël Dréano, éditeur de Kerentheque à titre non professionnel.
+     Pour toute question ou pour exercer vos droits :
+     {% include "includes/protected_email.html" with user="mael.dreano" domain="pm.me" %}</p>
+
   <h2>Données collectées</h2>
   <ul>
     <li><strong>Email</strong> : sert à vous connecter et à vous notifier. Jamais affiché publiquement.</li>
     <li><strong>Téléphone</strong> (facultatif) : jamais affiché publiquement.</li>
     <li><strong>Quartier</strong> : affiché publiquement avec vos objets.</li>
     <li><strong>Pseudo</strong> : affiché avec vos objets, uniquement aux membres connectés.</li>
-    <li><strong>Objets et demandes de contact</strong> : nécessaires au fonctionnement du service.</li>
+    <li><strong>Objets</strong> (nom, catégorie, description) : affichés dans le catalogue.</li>
+    <li><strong>Demandes de contact</strong> (objet concerné, message facultatif, statut) : visibles par vous et
+        par l'autre membre concerné.</li>
+    <li><strong>Signalements</strong> et <strong>messages envoyés via « Nous contacter »</strong> : lus
+        uniquement par l'éditeur.</li>
   </ul>
+
+  <h2>Pourquoi ces données sont utilisées</h2>
+  <ul>
+    <li><strong>Faire fonctionner le service</strong> (compte, catalogue, mise en relation, emails de connexion et
+        de notification) : ce traitement est nécessaire à l'exécution des conditions d'utilisation que vous
+        acceptez à l'inscription.</li>
+    <li><strong>Modérer le service et répondre à vos messages</strong> : ce traitement repose sur l'intérêt
+        légitime de l'éditeur à garantir un usage sûr de Kerentheque.</li>
+  </ul>
+  <p>Vos données ne sont ni vendues, ni utilisées à des fins publicitaires.</p>
+
   <h2>À qui vos coordonnées sont transmises</h2>
   <p>Vos coordonnées (email et/ou téléphone, selon vos réglages de partage) sont transmises à un autre membre
      uniquement dans deux cas :</p>
@@ -21,8 +45,45 @@
     <li>quand <strong>vous acceptez</strong> une demande reçue : elles sont transmises au demandeur.</li>
   </ul>
   <p>Vous confirmez explicitement ce partage à chaque demande envoyée.</p>
+
+  <h2>Sous-traitants</h2>
+  <ul>
+    <li><strong>Railway</strong> (Railway Corporation, États-Unis) héberge le site et sa base de données sur des
+        serveurs situés aux Pays-Bas (Union européenne).</li>
+    <li><strong>Google</strong> (service Gmail) envoie les emails du site : liens de connexion et notifications.
+        Seuls l'adresse du destinataire et le contenu de l'email lui sont transmis. Ces données peuvent être
+        traitées aux États-Unis ; ce transfert est encadré par le Data Privacy Framework UE–États-Unis, auquel
+        Google est certifié.</li>
+  </ul>
+
+  <h2>Durée de conservation</h2>
+  <ul>
+    <li>Vos données sont conservées tant que votre compte existe.</li>
+    <li>Un compte créé lors d'une demande de lien de connexion mais jamais utilisé est supprimé automatiquement,
+        au plus tôt une semaine après sa création, lors d'un nettoyage périodique.</li>
+    <li>Quand vous supprimez votre compte, sont effacés : votre email, votre téléphone, votre pseudo, votre
+        quartier, la description de vos objets et le message de vos demandes de contact. Vos objets disparaissent
+        du catalogue et vos demandes en attente sont annulées.</li>
+    <li>Sont conservés, sans aucune de vos coordonnées : le nom de vos objets, pour que l'historique des autres
+        membres reste lisible (vous y apparaissez comme « Utilisateur supprimé »), et les signalements que vous
+        avez rédigés, nécessaires à la modération.</li>
+    <li>Les emails déjà envoyés à d'autres membres (par exemple la notification d'une demande de contact, qui
+        contient votre message et vos coordonnées) restent dans leur messagerie : l'éditeur ne peut pas les
+        effacer.</li>
+  </ul>
+
+  <h2>Cookies</h2>
+  <p>Kerentheque n'utilise que des cookies strictement nécessaires à son fonctionnement : un cookie de session,
+     qui vous garde connecté, et un cookie de sécurité qui protège les formulaires (protection CSRF). Aucun
+     cookie de mesure d'audience ou de publicité n'est déposé ; aucun consentement n'est donc demandé.</p>
+
   <h2>Vos droits</h2>
-  <p>Vous pouvez modifier vos informations depuis votre profil, et supprimer votre compte à tout moment : votre
-     email, votre téléphone et votre pseudo sont alors effacés. Pour toute question : [email de contact].</p>
+  <p>Vous disposez d'un droit d'accès, de rectification, d'effacement, d'opposition, de limitation et de
+     portabilité de vos données. Vous pouvez modifier vos informations depuis votre profil et supprimer votre
+     compte à tout moment. Pour toute autre demande, écrivez à
+     {% include "includes/protected_email.html" with user="mael.dreano" domain="pm.me" %}.</p>
+  <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL
+     (<a href="https://www.cnil.fr/fr/plaintes" rel="noopener">cnil.fr/fr/plaintes</a>).</p>
 </article>
 {% endblock %}
+{% block scripts %}<script src="{% static 'js/protected-email.js' %}" defer></script>{% endblock %}

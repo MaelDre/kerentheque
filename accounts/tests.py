@@ -15,6 +15,7 @@ from sesame.utils import get_query_string
 from contacts.models import ContactRequest
 from contacts.services import send_request
 from items.models import Item
+from moderation.models import Report
 
 from .factories import make_category, make_item, make_neighborhood, make_user
 from .forms import ProfileForm
@@ -219,6 +220,29 @@ class DeleteAccountTests(TestCase):
         self.client.force_login(other)
         self.assertContains(self.client.get(reverse("contacts:received")), "Utilisateur supprimé")
 
+    def test_free_text_erased_but_names_and_reports_kept(self):
+        user = make_user()
+        item = make_item(owner=user, name="Perceuse", description="J'habite rue des Lilas")
+        other = make_user()
+        other_item = make_item(owner=other)
+        sent = send_request(user, other_item, message="Je suis Alice Martin, voisine du n°12")
+        report = Report.objects.create(author=user, item=other_item, reason="Objet douteux")
+
+        delete_account(user)
+
+        item.refresh_from_db()
+        sent.refresh_from_db()
+        report.refresh_from_db()
+        self.assertEqual(item.description, "")
+        self.assertNotIn("lilas", item.search_text)
+        self.assertEqual(item.name, "Perceuse")
+        self.assertEqual(sent.message, "")
+        self.assertEqual(report.reason, "Objet douteux")
+
+        # The owner no longer sees the deleted member's message in their history.
+        self.client.force_login(other)
+        self.assertNotContains(self.client.get(reverse("contacts:received")), "Alice Martin")
+
     def test_same_email_can_sign_up_again(self):
         user = make_user(email="gone@example.com")
         delete_account(user)
@@ -232,6 +256,14 @@ class LegalPagesTests(TestCase):
     def test_accessible_anonymously(self):
         for name in ["accounts:legal", "accounts:privacy"]:
             self.assertEqual(self.client.get(reverse(name)).status_code, 200)
+
+    def test_contact_email_not_exposed_in_html(self):
+        for name in ["accounts:legal", "accounts:privacy"]:
+            content = self.client.get(reverse(name)).content.decode()
+            self.assertNotIn("mael.dreano@pm.me", content)
+            self.assertNotIn("mailto:", content)
+            self.assertIn("mael.dreano [at] pm.me", content)
+            self.assertIn("js/protected-email.js", content)
 
 
 class PurgeUnusedAccountsTests(TestCase):

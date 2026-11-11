@@ -1,0 +1,6 @@
+{% comment %}
+Email protected against scrapers: the full address never appears in the served HTML.
+static/js/protected-email.js turns this span into a mailto link; without JS the readable
+fallback stays. Usage: {% include "includes/protected_email.html" with user="name" domain="example.org" %}
+Load the script on the page through the "scripts" block.
+{% endcomment %}<span class="protected-email" data-user="{{ user }}" data-domain="{{ domain }}">{{ user }} [at] {{ domain }}</span>
