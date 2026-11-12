@@ -34,7 +34,7 @@ body > header nav { flex-wrap: wrap; }
 .project-banner p { margin: 0; }
 .project-banner [role="button"] { width: auto; margin: 0; }
 .filters {
-  display: grid; gap: 0 var(--space-4); grid-template-columns: 1fr;
+  display: grid; gap: var(--space-3) var(--space-4); grid-template-columns: 1fr;
   padding: var(--space-4);
   margin-bottom: var(--space-6);
   background: var(--surface-sunken);
