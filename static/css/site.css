@@ -40,6 +40,9 @@ body > header nav { flex-wrap: wrap; }
   background: var(--surface-sunken);
   border-radius: var(--radius-lg);
 }
+/* role="search" makes Pico drop the fields' bottom margin but not the submit
+   button's, which lifted it ~1rem above the fields' baseline. */
+.filters button { margin-bottom: 0; }
 @media (min-width: 768px) {
   .filters { grid-template-columns: 2fr 1fr 1fr auto; align-items: end; }
 }
