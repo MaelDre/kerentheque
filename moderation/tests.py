@@ -1,13 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from sesame.utils import get_query_string
 
 from accounts.factories import make_item, make_user
+from accounts.models import User
+from accounts.services import delete_account
 from contacts.models import ContactRequest
 from contacts.services import send_request
 from items.models import Item
 
 from .models import Report
+from .services import platform_stats
 
 
 class ReportTests(TestCase):
@@ -113,3 +117,50 @@ class AdminModerationTests(TestCase):
             self.assertEqual(self.client.get(reverse(name)).status_code, 200, name)
         self.assertEqual(self.client.get(reverse("admin:accounts_user_change", args=[self.owner.pk])).status_code, 200)
         self.assertEqual(self.client.get(reverse("admin:items_item_change", args=[self.item.pk])).status_code, 200)
+
+
+class PlatformStatsTests(TestCase):
+    def test_items_exclude_deleted_but_keep_suspended_owners(self):
+        make_item()
+        make_item(owner=make_user(is_active=False))  # owner suspended: still counted
+        make_item(deleted_at=timezone.now())
+        self.assertEqual(platform_stats()["items"], 2)
+
+    def test_members_are_active_with_complete_profile(self):
+        make_user()  # counted
+        make_user(complete=False)
+        # One missing profile criterion each (the factory would fill them in at creation).
+        for missing in [{"pseudo": None}, {"pseudo": ""}, {"neighborhood": None}, {"terms_accepted_at": None}]:
+            User.objects.filter(pk=make_user().pk).update(**missing)
+        make_user(is_active=False)  # suspended
+        delete_account(make_user())
+        self.assertEqual(platform_stats()["members"], 1)
+
+    def test_requests_counted_by_status(self):
+        item = make_item()
+        for status in ContactRequest.Status.values:
+            ContactRequest.objects.create(item=item, requester=make_user(), item_name=item.name, status=status)
+        stats = platform_stats()
+        self.assertEqual(stats["requests"], 4)
+        self.assertEqual(stats["accepted_requests"], 1)
+
+
+class AdminDashboardTests(TestCase):
+    LABELS = ["Objets", "Membres inscrits", "Demandes de prêt", "Mises en relation acceptées"]
+
+    def test_superuser_sees_indicators_and_app_list(self):
+        self.client.force_login(make_user(is_staff=True, is_superuser=True))
+        make_item()
+        response = self.client.get(reverse("admin:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Indicateurs de la plateforme")
+        for label in self.LABELS:
+            self.assertContains(response, label)
+        self.assertContains(response, '<span class="kt-value">1</span>', html=True)  # one item
+        self.assertContains(response, 'id="content-main"')  # default app list still rendered
+
+    def test_staff_without_superuser_sees_no_indicators(self):
+        self.client.force_login(make_user(is_staff=True))
+        response = self.client.get(reverse("admin:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Indicateurs de la plateforme")

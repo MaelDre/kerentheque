@@ -1,0 +1,15 @@
+{% if stats %}
+<style>
+  .kt-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin: 0 0 2rem; padding: 0; list-style: none; }
+  .kt-dashboard li { border: 1px solid var(--hairline-color); border-radius: 4px; padding: 1rem; background: var(--body-bg); list-style: none; }
+  .kt-dashboard .kt-value { display: block; font-size: 2rem; font-weight: 600; line-height: 1.2; color: var(--body-fg); }
+  .kt-dashboard .kt-label { color: var(--body-quiet-color); }
+</style>
+<section aria-label="Indicateurs de la plateforme">
+  <ul class="kt-dashboard">
+    {% for value, label in stats %}
+    <li><span class="kt-value">{{ value }}</span><span class="kt-label">{{ label }}</span></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

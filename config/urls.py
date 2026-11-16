@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 
 admin.site.site_header = "Administration Kerentheque"
 admin.site.site_title = "Kerentheque"
+# Home page adds the platform indicators (superusers only), see moderation/templatetags.
+admin.site.index_template = "admin/kerentheque_index.html"
 
 urlpatterns = [
     path("admin/", admin.site.urls),

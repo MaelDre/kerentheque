@@ -91,6 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def is_profile_complete(self):
+        # Mirrored as a SQL filter in moderation.services.platform_stats: keep both in sync.
         return bool(self.pseudo and self.neighborhood_id and self.terms_accepted_at)
 
     @property
