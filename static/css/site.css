@@ -33,6 +33,46 @@ body > header nav { flex-wrap: wrap; }
 }
 .project-banner p { margin: 0; }
 .project-banner [role="button"] { width: auto; margin: 0; }
+
+/* Accueil : compteur d'objets et prochain palier. Cartes = article (filet border, radius-lg). */
+.home-stats { display: grid; gap: var(--space-4); margin-bottom: var(--space-4); }
+.home-stats article { margin: 0; padding: var(--space-4); }
+.home-stats p { margin: 0; }
+
+/* Compteur : chiffre et libellé sur une même ligne pour limiter la hauteur sur mobile. */
+.item-counter { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); }
+.item-counter-number {
+  /* Mirrors the .display text style of tokens.css. */
+  font-family: var(--font-display); font-size: 32px; line-height: 38px; font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--brand);
+}
+.item-counter-label { color: var(--ink-muted); }
+
+.milestone-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-2);
+}
+.milestone-title { margin: 0; }
+.milestone-percent { display: flex; align-items: center; gap: var(--space-2); }
+.milestone-percent strong { color: var(--brand); }
+/* Pastille : accent seulement en fond, avec texte ink (règle du design system). */
+.milestone-badge {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.milestone progress {
+  --pico-progress-background-color: var(--surface-sunken);
+  --pico-progress-color: var(--brand);
+  margin: var(--space-4) 0 var(--space-1);
+}
+.milestone-ends { display: flex; justify-content: space-between; }
+.milestone [role="button"] { width: auto; margin: var(--space-4) 0 0; }
 .filters {
   display: grid; gap: var(--space-3) var(--space-4); grid-template-columns: 1fr;
   padding: var(--space-4);

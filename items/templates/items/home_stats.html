@@ -1,0 +1,36 @@
+{# Compteur d'objets et prochain palier, affichés sur l'accueil du catalogue. #}
+{# Accords écrits à la main : le filtre pluralize mettrait « 0 objets », alors qu'en français 0 est singulier. #}
+<section class="home-stats" aria-label="Objets de la Kerentheque">
+  <article class="item-counter">
+    <p class="item-counter-number">{{ item_count|floatformat:"g" }}</p>
+    <p class="item-counter-label">{% if item_count > 1 %}objets disponibles{% else %}objet disponible{% endif %} à emprunter</p>
+  </article>
+
+  <article class="milestone">
+    {% if milestone %}
+      <div class="milestone-head">
+        <h2 class="milestone-title">Prochain palier : {{ milestone.target|floatformat:"g" }} objets</h2>
+        <p class="milestone-percent">
+          {% if milestone.is_close %}<span class="milestone-badge">Bientôt atteint</span>{% endif %}
+          <strong>{{ milestone.percent }} %</strong>
+        </p>
+      </div>
+      <p class="meta">
+        {% if milestone.missing == 1 %}
+          Il ne manque plus qu'<strong>un objet</strong> pour franchir le cap. Le vôtre sera peut-être le déclic.
+        {% else %}
+          Il manque <strong>{{ milestone.missing|floatformat:"g" }} objets</strong> pour y arriver. Plus on est nombreux à prêter, plus il y a de choses à emprunter près de chez vous.
+        {% endif %}
+      </p>
+      <progress max="100" value="{{ milestone.percent }}" aria-label="{{ milestone.percent }} % du prochain palier"></progress>
+      <p class="milestone-ends small meta" aria-hidden="true"><span>0</span><span>{{ milestone.target|floatformat:"g" }}</span></p>
+    {% else %}
+      <p>Vous avez un objet qui dort au placard ? Prêtez-le à vos voisins.</p>
+    {% endif %}
+    {% if user.is_authenticated %}
+      <a href="{% url 'items:create' %}" role="button">Ajouter un objet</a>
+    {% else %}
+      <a href="{% url 'accounts:login' %}" role="button">Ajouter un objet</a>
+    {% endif %}
+  </article>
+</section>

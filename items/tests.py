@@ -1,11 +1,14 @@
 from django.core import mail
-from django.test import TestCase, override_settings
+from unittest import mock
+
+from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 
 from accounts.factories import make_category, make_item, make_neighborhood, make_user
 from contacts.models import ContactRequest
 from contacts.services import refuse, send_request
 
+from .milestones import MilestoneProgress, milestone_progress
 from .models import Item
 from .search import normalize
 
@@ -13,6 +16,31 @@ from .search import normalize
 class NormalizeTests(TestCase):
     def test_lowercase_and_strip_accents(self):
         self.assertEqual(normalize("Échelle Télescopique"), "echelle telescopique")
+
+
+class MilestoneProgressTests(SimpleTestCase):
+    def test_no_item(self):
+        self.assertEqual(milestone_progress(0), MilestoneProgress(target=25, percent=0, missing=25, is_close=False))
+
+    def test_one_missing(self):
+        self.assertEqual(milestone_progress(24).missing, 1)
+
+    def test_milestone_just_reached_targets_the_next_one(self):
+        progress = milestone_progress(25)
+        self.assertEqual((progress.target, progress.percent), (50, 50))
+
+    def test_close_to_milestone(self):
+        self.assertEqual(milestone_progress(87), MilestoneProgress(target=100, percent=87, missing=13, is_close=True))
+
+    def test_far_from_milestone(self):
+        self.assertEqual(milestone_progress(120), MilestoneProgress(target=200, percent=60, missing=80, is_close=False))
+
+    def test_last_milestone_still_ahead(self):
+        self.assertEqual(milestone_progress(999).target, 1000)
+
+    def test_no_milestone_from_1000(self):
+        self.assertIsNone(milestone_progress(1000))
+        self.assertIsNone(milestone_progress(1500))
 
 
 class ItemManagementTests(TestCase):
@@ -107,6 +135,10 @@ class CatalogTests(TestCase):
     def catalog(self, **params):
         return self.client.get(reverse("items:catalog"), params)
 
+    def assertCounter(self, response, number, label):
+        self.assertContains(response, f'<p class="item-counter-number">{number}</p>')
+        self.assertContains(response, f'<p class="item-counter-label">{label} à emprunter</p>')
+
     def test_anonymous_sees_catalog(self):
         make_item(owner=self.alice, name="Perceuse")
         response = self.catalog()
@@ -166,6 +198,56 @@ class CatalogTests(TestCase):
             make_item(owner=self.alice, name=f"Outil {i}")
         response = self.catalog(q="outil")
         self.assertContains(response, "q=outil&amp;page=2")
+
+    def test_counter_excludes_unavailable_items(self):
+        make_item(owner=self.alice, name="Perceuse")
+        make_item(owner=self.alice, name="Ponceuse")
+        deleted = make_item(owner=self.alice)
+        deleted.deleted_at = deleted.created_at
+        deleted.save()
+        make_item(owner=self.bob)
+        self.bob.is_active = False
+        self.bob.save()
+        self.assertCounter(self.catalog(), 2, "objets disponibles")
+
+    def test_counter_ignores_search_and_filters(self):
+        make_item(owner=self.alice, name="Perceuse", category=self.bricolage)
+        make_item(owner=self.alice, name="Ponceuse", category=self.bricolage)
+        response = self.catalog(q="introuvable", category=self.jardin.pk)
+        self.assertContains(response, "Aucun objet ne correspond")
+        self.assertCounter(response, 2, "objets disponibles")
+
+    def test_counter_is_singular_for_zero_and_one(self):
+        self.assertCounter(self.catalog(), 0, "objet disponible")
+        make_item(owner=self.alice)
+        self.assertCounter(self.catalog(), 1, "objet disponible")
+
+    @mock.patch("items.milestones.MILESTONES", (10,))
+    def test_close_badge_shown_from_80_percent(self):
+        for i in range(5):
+            make_item(owner=self.alice, name=f"Outil {i}")
+        response = self.catalog()
+        self.assertContains(response, "Prochain palier : 10 objets")
+        self.assertContains(response, "<progress")
+        self.assertNotContains(response, "Bientôt atteint")
+        for i in range(5, 9):
+            make_item(owner=self.alice, name=f"Outil {i}")
+        self.assertContains(self.catalog(), "Bientôt atteint")
+
+    @mock.patch("items.milestones.MILESTONES", (1,))
+    def test_milestone_hidden_after_last_one(self):
+        make_item(owner=self.alice)
+        response = self.catalog()
+        self.assertNotContains(response, "Prochain palier")
+        self.assertNotContains(response, "<progress")
+        self.assertContains(response, "Ajouter un objet")
+
+    def test_add_button_targets_form_for_member(self):
+        self.client.force_login(self.bob)
+        self.assertContains(self.catalog(), f'href="{reverse("items:create")}" role="button">Ajouter un objet')
+
+    def test_add_button_targets_login_for_anonymous(self):
+        self.assertContains(self.catalog(), f'href="{reverse("accounts:login")}" role="button">Ajouter un objet')
 
     def test_detail_for_anonymous_invites_login(self):
         item = make_item(owner=self.alice)

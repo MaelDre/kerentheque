@@ -9,6 +9,7 @@ from contacts.forms import ContactRequestForm
 from contacts.services import existing_request
 
 from .forms import CatalogFilterForm, ItemForm
+from .milestones import milestone_progress
 from .models import Item
 from .search import normalize
 from .services import delete_item
@@ -30,10 +31,18 @@ def catalog(request):
     # Conserve les filtres dans les liens de pagination.
     params = request.GET.copy()
     params.pop("page", None)
+    # Total of the whole catalog, deliberately independent of the search and filters above.
+    item_count = Item.objects.available().count()
     return render(
         request,
         "items/catalog.html",
-        {"form": form, "page": page, "filter_query": params.urlencode()},
+        {
+            "form": form,
+            "page": page,
+            "filter_query": params.urlencode(),
+            "item_count": item_count,
+            "milestone": milestone_progress(item_count),
+        },
     )
 
 
