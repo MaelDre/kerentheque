@@ -6,3 +6,6 @@ db.sqlite3*
 *.sqlite3
 *.sqlite3-*
 staticfiles/
+
+# Local working notes (not versioned)
+/_elements_de_travail/
